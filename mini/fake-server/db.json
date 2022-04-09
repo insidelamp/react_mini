@@ -1,19 +1,33 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "userId": "AAAA",
+      "imageUrl": "/images111/cancle.png",
+      "content": "방가링",
+      "createdAt": "",
+      "userGender": ""
+    },
+    {
+      "userId": "BBBB",
+      "imageUrl": "/images222/cancle.png",
+      "content": "방가방가",
+      "createdAt": "",
+      "userGender": ""
+    },
+    {
+      "userId": "CCCC",
+      "imageUrl": "/images333/cancle.png",
+      "content": "반가워요",
+      "createdAt": "",
+      "userGender": ""
     }
   ],
-  "comments": [
+
+  "gets": [
     {
-      "id": 1,
-      "body": "some comment",
+      "userId": 1,
+      "imageUrl": "some comment",
       "postId": 1
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
