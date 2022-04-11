@@ -7,25 +7,25 @@ import moment from "moment";
 //로드
 const LOAD = "post/LOAD";
 
-const CREATE = "post/CREATE";
+const ADD = "post/ADD";
 
-const UPDATE = "post/UPDATE";
+const EDIT = "post/EDIT";
 
 const DELETE = "post/DELETE";
+
+const LOADING = "LOADING";
 
 //액션 크리에이터
 
 const loadPost = createAction(LOAD, (postObject) => ({ postObject }));
 
-const addPost = createAction(CREATE, (post) => ({ post }));
+const addPost = createAction(ADD, (post) => ({ post }));
 
-const editPost = (paylod) => {
-  return { type: UPDATE, paylod };
-};
-
-const deletePost = (paylod) => {
-  return { type: DELETE, paylod };
-};
+const editPost = createAction(EDIT, (post_id, post) => ({
+  post_id,
+  post,
+}));
+const deletePost = createAction(DELETE, (post_id) => ({ post_id }));
 
 const initialState = {
   post: [],
@@ -48,7 +48,7 @@ const loadPostDB = () => {
   };
 };
 
-const addPostFB = (content) => {
+const addPostDB = (post) => {
   return function (dispatch, getState, { history }) {
     // const user_info = getState().user.user;
 
@@ -64,37 +64,119 @@ const addPostFB = (content) => {
     //   .putString(_image, "data_url");
     const postObj = {
       userId: "",
-      nickname: "",
+      username: "",
+      password: "",
+      content: post.content,
+      modifiedAt: "",
       imgUrl: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
       userIcon: "",
-      comment_cnt: 0,
+      comment: "",
       date: moment().format("YYYY-MM-DD HH:mm:ss"),
-      content: "",
     };
     console.log(postObj);
-    // axios
-    //   .post("http://localhost:3001/posts", { ...postObj })
-    //   .then((res) => {
-    //     dispatch(addPost({ ...initialPost, postId: res.data.postId }));
-    //     // history.replace("/");
-    //   })
-    //   .catch((err) => {
-    //     window.alert("해당 글을 불러올 수 없습니다!");
-    //     console.log("글 불러오기 실패!", err);
-    //   });
+    axios
+      .post("http://localhost:3001/posts", {
+        content: post.content,
+        imageUrl: post.imageUrl,
+        id: post.id,
+      })
+
+      .then((res) => {
+        let posts = { ...post };
+        dispatch(addPost(posts));
+        history.replace("/");
+      })
+      .catch((err) => {
+        console.log("글 불러오기 실패!", err);
+      });
   };
 };
 
+const editPostDB = (post_id, post) => {
+  return function (dispatch, getState, { history }) {
+    axios
+      .put("http://localhost:3001/posts/" + post_id, {
+        ...post,
+      })
+      .then((response) => {
+        dispatch(editPost(post_id, { ...post }));
+        history.replace("/");
+      })
+      .catch((err) => {
+        window.alert("수정 실패");
+        // console.log("수정실패");
+      });
+
+    // _upload.then((snapshot) => {
+    //   snapshot.ref
+    //     .getDownloadURL()
+    //     .then((url) => {
+    //       console.log(url);
+
+    //       return url;
+    //     })
+    //     .then((url) => {
+    //       postDB
+    //         .doc(post_id)
+    //         .update({ ...post, image_url: url })
+    //         .then((doc) => {
+    //           dispatch(editPost(post_id, { ...post, image_url: url }));
+    //           history.replace("/");
+    //         });
+    //     })
+    //     .catch((err) => {
+    //       window.alert("앗! 이미지 업로드에 문제가 있어요!");
+    //       console.log("앗! 이미지 업로드에 문제가 있어요!", err);
+    //     });
+    // });
+  };
+};
+
+const deletePostDB = (post_id = null) => {
+  return function (dispatch, getState, { history }) {
+    axios
+      .delete("http://localhost:3001/posts/" + post_id, { post_id })
+      .then((doc) => {
+        history.replace("/");
+        dispatch(deletePost(post_id));
+      })
+      .catch((error) => {
+        window.alert("아 게시물 삭제에 문제가 있어요");
+        console.log("앗! 게시물 삭제에 문제가있어요!", error);
+      });
+  };
+};
 export default handleActions(
   {
     [LOAD]: (state, action) =>
       produce(state, (draft) => {
         draft.post.push(...action.payload.postObject);
         console.log(draft);
+        draft.is_loading = false;
       }),
-    [CREATE]: (state, action) =>
+    [ADD]: (state, action) =>
       produce(state, (draft) => {
         draft.post.unshift(action.payload.post);
+        console.log(state, draft);
+      }),
+    [EDIT]: (state, action) =>
+      produce(state, (draft) => {
+        let idx = draft.post.findIndex(
+          (p) => p.id + "" === action.payload.post_id
+        );
+        console.log(JSON.stringify(draft.post), idx);
+
+        draft.post[idx] = { ...draft.post[idx], ...action.payload.post };
+      }),
+    [DELETE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.post = draft.post.filter(
+          (a) => a.id + "" !== action.payload.post_id
+        );
+      }),
+    [LOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.is_loading = action.payload.is_loading;
       }),
   },
   initialState
@@ -102,7 +184,9 @@ export default handleActions(
 
 const actionCreators = {
   loadPostDB,
-  addPostFB,
+  addPostDB,
+  editPostDB,
+  deletePostDB,
 };
 
 export { actionCreators };

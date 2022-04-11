@@ -1,33 +1,20 @@
 {
   "posts": [
     {
-      "userId": "AAAA",
-      "imageUrl": "/images111/cancle.png",
-      "content": "방가링",
-      "createdAt": "",
-      "userGender": ""
+      "content": "gggggggffff",
+      "id": 19
     },
     {
-      "userId": "BBBB",
-      "imageUrl": "/images222/cancle.png",
-      "content": "방가방가",
-      "createdAt": "",
-      "userGender": ""
+      "content": "1111111111111",
+      "id": 21
     },
     {
-      "userId": "CCCC",
-      "imageUrl": "/images333/cancle.png",
-      "content": "반가워요",
-      "createdAt": "",
-      "userGender": ""
-    }
-  ],
-
-  "gets": [
+      "content": "ffff",
+      "id": 22
+    },
     {
-      "userId": 1,
-      "imageUrl": "some comment",
-      "postId": 1
+      "content": "ggggggggggggggg",
+      "id": 23
     }
   ],
 
