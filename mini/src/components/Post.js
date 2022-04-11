@@ -12,8 +12,25 @@ const Post = (props) => {
   return (
     <React.Fragment>
       <Grid margin="30px">
+        <Text>{props.id}</Text>
         <Text>{props.userId}</Text>
         <Text>{props.content}</Text>
+      </Grid>
+      <Button
+        width="auto"
+        margin="0px 4px 0px 30px"
+        padding="4px"
+        _onClick={(event) => {
+          history.push(`/modify/${props.id}`);
+          event.stopPropagation();
+        }}
+      >
+        수정
+      </Button>
+      <Grid is_flex margin="0px 10px" width="auto">
+        <Button width="auto" padding="4px">
+          삭제
+        </Button>
       </Grid>
     </React.Fragment>
   );
@@ -22,13 +39,11 @@ const Post = (props) => {
 Post.defaultProps = {
   user_info: {
     user_name: "yarn",
-    user_profile:
-      "https://insidelamp.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20220314_085335507.jpg",
+    user_profile: "",
   },
-  image_url:
-    "https://insidelamp.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20220314_085335507.jpg",
-  contents: "풍경",
-  comment_cnt: 10,
+  image_url: "",
+  content: "",
+  comment_cnt: "",
   insert_dt: "2022-04-01 10:00:00",
   is_me: false,
 };

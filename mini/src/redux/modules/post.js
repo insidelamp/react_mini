@@ -7,9 +7,9 @@ import moment from "moment";
 //로드
 const LOAD = "post/LOAD";
 
-const CREATE = "post/CREATE";
+const ADD = "post/ADD";
 
-const UPDATE = "post/UPDATE";
+const EDIT = "post/EDIT";
 
 const DELETE = "post/DELETE";
 
@@ -17,10 +17,10 @@ const DELETE = "post/DELETE";
 
 const loadPost = createAction(LOAD, (postObject) => ({ postObject }));
 
-const addPost = createAction(CREATE, (post) => ({ post }));
+const addPost = createAction(ADD, (post) => ({ post }));
 
-const editPost = (paylod) => {
-  return { type: UPDATE, paylod };
+const editPost = (post, id) => {
+  return { type: EDIT, post, id };
 };
 
 const deletePost = (paylod) => {
@@ -48,7 +48,7 @@ const loadPostDB = () => {
   };
 };
 
-const addPostFB = (content) => {
+const addPostDB = (post) => {
   return function (dispatch, getState, { history }) {
     // const user_info = getState().user.user;
 
@@ -64,24 +64,31 @@ const addPostFB = (content) => {
     //   .putString(_image, "data_url");
     const postObj = {
       userId: "",
-      nickname: "",
+      username: "",
+      password: "",
+      content: post.content,
+      modifiedAt: "",
       imgUrl: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
       userIcon: "",
-      comment_cnt: 0,
+      comment: "",
       date: moment().format("YYYY-MM-DD HH:mm:ss"),
-      content: "",
     };
     console.log(postObj);
-    // axios
-    //   .post("http://localhost:3001/posts", { ...postObj })
-    //   .then((res) => {
-    //     dispatch(addPost({ ...initialPost, postId: res.data.postId }));
-    //     // history.replace("/");
-    //   })
-    //   .catch((err) => {
-    //     window.alert("해당 글을 불러올 수 없습니다!");
-    //     console.log("글 불러오기 실패!", err);
-    //   });
+    axios
+      .post("http://localhost:3001/posts", {
+        content: post.content,
+        imageUrl: post.imageUrl,
+        id: post.id,
+      })
+
+      .then((res) => {
+        console.log(1111, res);
+        dispatch(addPost(res));
+        // history.replace("/");
+      })
+      .catch((err) => {
+        console.log("글 불러오기 실패!", err);
+      });
   };
 };
 
@@ -92,7 +99,7 @@ export default handleActions(
         draft.post.push(...action.payload.postObject);
         console.log(draft);
       }),
-    [CREATE]: (state, action) =>
+    [ADD]: (state, action) =>
       produce(state, (draft) => {
         draft.post.unshift(action.payload.post);
       }),
@@ -102,7 +109,7 @@ export default handleActions(
 
 const actionCreators = {
   loadPostDB,
-  addPostFB,
+  addPostDB,
 };
 
 export { actionCreators };

@@ -9,28 +9,22 @@ import { Grid, Button, Input, Text } from "../elements";
 import Post from "../components/Post";
 
 const PostList = (props) => {
-  console.log(props);
   const dispatch = useDispatch();
   const post = useSelector(({ post }) => post);
-  console.log(post);
-  const history = useHistory();
 
-  const [userid, setUserId] = React.useState("");
-  const [contents, setContents] = React.useState("");
+  console.log(post.post);
+
+  const [content, setContent] = React.useState(post ? post.content : "");
 
   useEffect(() => {
-    if (post.post.length === 0) {
-      dispatch(postActions.loadPostDB());
-    }
+    dispatch(postActions.loadPostDB());
   }, []);
-
-  const addPost = () => {
-    dispatch(postActions.addPostFB({ userId: userid, content: contents }));
+  const changeContents = (e) => {
+    setContent(e.target.value);
   };
 
-  const changeContents = (e) => {
-    setContents(e.target.value);
-    console.log(setContents(e.target.value));
+  const addPost = () => {
+    dispatch(postActions.addPostDB({ content: content }));
   };
 
   return (
@@ -44,22 +38,18 @@ const PostList = (props) => {
           );
         })}
       </Grid>
+
       <Grid padding="16px">
         <Input
-          value={contents}
+          value={content}
+          _onChange={changeContents}
           label="게시글 내용"
           placeholder="게시글 작성"
-          _onChage={changeContents}
-        />
-        <Input
-          value={userid}
-          label="게시글 내용"
-          placeholder="게시글 작성"
-          _onChage={changeContents}
+          multiline
         />
       </Grid>
 
-      <Button text="게시글 수정" _onClick={addPost} />
+      <Button text="게시글 작성" _onClick={addPost} />
     </React.Fragment>
   );
 };
