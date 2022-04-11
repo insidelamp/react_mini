@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { Grid, Button, Input, Text } from "../elements";
+import { history } from "../redux/configureStore";
 
 const PostWrite = (props) => {
   console.log(props);
@@ -12,7 +13,7 @@ const PostWrite = (props) => {
   };
 
   const addPost = () => {
-    dispatch(postActions.addPostDB({ content: content }));
+    dispatch(postActions.addPostDB({ content: content }), history.replace("/"));
   };
 
   return (

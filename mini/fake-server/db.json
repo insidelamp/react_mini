@@ -1,44 +1,20 @@
 {
   "posts": [
     {
-      "id": 1,
-      "userId": "AAAA",
-      "imageUrl": "/images111/cancle.png",
-      "content": "방가링",
-      "createdAt": "",
-      "userGender": ""
+      "content": "gggggggffff",
+      "id": 19
     },
     {
-      "id": 2,
-      "userId": "BBBB",
-      "imageUrl": "/images222/cancle.png",
-      "content": "방가방가",
-      "createdAt": "",
-      "userGender": ""
+      "content": "1111111111111",
+      "id": 21
     },
     {
-      "id": 3,
-      "userId": "CCCC",
-      "imageUrl": "/images333/cancle.png",
-      "content": "반가워요",
-      "createdAt": "",
-      "userGender": ""
+      "content": "ffff",
+      "id": 22
     },
     {
-      "id": 4,
-      "userId": "CCC111C",
-      "imageUrl": "/images333/cancle.png",
-      "content": "반가워요",
-      "createdAt": "",
-      "userGender": ""
-    },
-    {
-      "id": 5,
-      "userId": "CCC154511C",
-      "imageUrl": "/images333/cancle.png",
-      "content": "반가워요",
-      "createdAt": "",
-      "userGender": ""
+      "content": "ggggggggggggggg",
+      "id": 23
     }
   ]
 }

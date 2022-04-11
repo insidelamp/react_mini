@@ -7,30 +7,23 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import styled from "styled-components";
 import { Grid, Button, Input, Text } from "../elements";
 import Post from "../components/Post";
+import { history } from "../redux/configureStore";
 
 const PostList = (props) => {
   const dispatch = useDispatch();
-  const post = useSelector(({ post }) => post);
-
-  console.log(post.post);
-
-  const [content, setContent] = React.useState(post ? post.content : "");
+  const post = useSelector(({ post }) => post.post);
+  console.log(post);
 
   useEffect(() => {
-    dispatch(postActions.loadPostDB());
+    if (post.length === 0) {
+      dispatch(postActions.loadPostDB());
+    }
   }, []);
-  const changeContents = (e) => {
-    setContent(e.target.value);
-  };
-
-  const addPost = () => {
-    dispatch(postActions.addPostDB({ content: content }));
-  };
 
   return (
     <React.Fragment>
       <Grid margin="10px">
-        {post.post.map((p, idx) => {
+        {post.map((p, idx) => {
           return (
             <Grid>
               <Post {...p} />
@@ -38,18 +31,13 @@ const PostList = (props) => {
           );
         })}
       </Grid>
-
-      <Grid padding="16px">
-        <Input
-          value={content}
-          _onChange={changeContents}
-          label="게시글 내용"
-          placeholder="게시글 작성"
-          multiline
-        />
-      </Grid>
-
-      <Button text="게시글 작성" _onClick={addPost} />
+      <Button
+        text="게시글 추가하러가기"
+        _onClick={(event) => {
+          history.push(`/add`);
+          event.stopPropagation();
+        }}
+      ></Button>
     </React.Fragment>
   );
 };

@@ -2,13 +2,10 @@ import React from "react";
 
 import { Grid, Image, Text, Button } from "../elements";
 import { actionCreators as postActions } from "../redux/modules/post";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 
 const Post = (props) => {
-  const dispatch = useDispatch();
-  console.log(props);
-
   return (
     <React.Fragment>
       <Grid margin="30px">

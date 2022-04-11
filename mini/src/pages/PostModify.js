@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { Grid, Button, Input, Text } from "../elements";
 import axios from "axios";
@@ -9,6 +9,12 @@ const PostWrite = (props) => {
   console.log(props);
   const post_id = props.match.params.id;
   const dispatch = useDispatch();
+  const post_list = useSelector((state) => state.post.post);
+  console.log(post_list);
+  const is_edit = post_id ? true : false;
+  console.log(is_edit);
+
+  const [contents, setContents] = React.useState(post_list.content);
 
   const [post, setPost] = React.useState({
     userId: "",
@@ -23,7 +29,7 @@ const PostWrite = (props) => {
   });
   const changeContents = (e) => {
     setPost({
-      ...post,
+      // ...post,
       content: e.target.value,
     });
   };
@@ -43,9 +49,12 @@ const PostWrite = (props) => {
     };
     setPost(
       axios
-        .get("http://localhost:3001/posts" + post_id)
+        .get("http://localhost:3001/posts/" + post_id)
         .then((response) => {
-          console.log(1234, response.data);
+          setPost({
+            content: response.data.content,
+            userId: response.data.userId,
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -53,16 +62,23 @@ const PostWrite = (props) => {
     );
   }, []);
 
+  const editPost = () => {
+    dispatch(postActions.editPostDB(post_id, post));
+  };
+  const deletePost = () => {
+    dispatch(postActions.deletePostDB(post_id));
+  };
+
   return (
     <React.Fragment>
       <Grid>
         <Grid padding="16px">
           <Text margin="0px" size="36px" bold>
-            {post.content}님 게시글 수정
+            {post.userId}님 게시글 수정
           </Text>
         </Grid>
       </Grid>
-      {post.title}
+
       <Grid>
         <Grid padding="16px">
           <Text margin="0px" size="24px" bold>
@@ -70,6 +86,7 @@ const PostWrite = (props) => {
           </Text>
         </Grid>
       </Grid>
+      <Post {...post} />
 
       <Grid padding="16px">
         <Input
@@ -80,10 +97,10 @@ const PostWrite = (props) => {
           multiLine
         />
       </Grid>
-      <Post {...post} />
 
       <Grid padding="16px">
-        {/* <Button text="게시글 수정" _onClick={addPost}></Button>) */}
+        <Button text="게시글 수정" _onClick={editPost}></Button>
+        <Button margin="30px" text="게시글 삭제" _onClick={deletePost}></Button>
       </Grid>
     </React.Fragment>
   );
