@@ -16,5 +16,21 @@
       "content": "ggggggggggggggg",
       "id": 23
     }
+  ],
+
+  "login": [
+    {
+      "userId": "daun99",
+      "password": "123456789"
+    }
+  ],
+
+  "signup": [
+    {
+      "userId": "daun99",
+      "username": "졸려졸려왕졸려" ,
+      "password": "123456789" ,
+      "gender" : "여자" 
+    }
   ]
 }
