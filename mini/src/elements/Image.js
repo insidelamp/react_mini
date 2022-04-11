@@ -26,9 +26,10 @@ const Image = (props) => {
 };
 
 Image.defaultProps = {
-  shape: "circle",
-  src: "https://insidelamp.s3.ap-northeast-2.amazonaws.com/KakaoTalk_20220314_085335507.jpg",
-  size: 36,
+  shape: "rectangle",
+  src: "https://ifh.cc/g/nn7mf5.png",
+  width: "100px",
+  height: "50px"
 };
 
 const ImageDefault = styled.div`
