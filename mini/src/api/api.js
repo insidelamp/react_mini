@@ -1,36 +1,34 @@
 import axios from "axios";
 
-const USER_TOKEN = sessionStorage.getItem("X-AUTH-TOKEN");
+// const USER_TOKEN = sessionStorage.getItem("X-AUTH-TOKEN");
 
 const api = axios.create({
   // 기본 서버주소
   baseURL: "http://3.35.27.159:8080",
 });
 
-api.interceptors.request.use(
-  function (config) {
-    config.headers.Authorization = `Bearer ${USER_TOKEN}`;
-    return config;
-  },
-  function (error) {
-    console.log("err");
-    return Promise.reject(error);
-  }
-);
+// api.interceptors.request.use(
+  
+//     function (config) {
+//     config.headers.Authorization = `Bearer ${USER_TOKEN}`;
+//     console.log(config);
+//     return config;
+//   },
+//   function (error) {
+//     console.log("err");
+//     return Promise.reject(error);
+//   }
+// );
 
-export const apis = {
-  // 회원가입 요청
-  signUp: (userInfo) => api.post("user/signup", userInfo),
-  // 로그인
-  login: (data) =>
-    api.post("user/login", {
-      username: data.username,
-      password: data.password,
-    }),
-  // 로그인 체크
-  loginCheck: () => api.get("/api/users/:userUid/validation"),
+// export const apis = {
+//   // 회원가입 요청
+//   signUp: (userInfo) => api.post("user/signup", userInfo),
+//   // 로그인
+//   login: (data) => api.post("/api/user/login",  { userId: data.userId, password: data.password, }),
+//   // 로그인 체크
+//   loginCheck: () => api.get("/api/users/:userUid/validation"),
 
-  /*  // 게시물 불러오기
+ /*  // 게시물 불러오기
   getPost: () => instance.get("/", {}),
   // 게시물 작성하기
   addPost: (contents) => instance.post("/api/posts", contents),
@@ -58,6 +56,6 @@ export const apis = {
     instance.delete(`/api/posts/${postUid}/${userUid}`),
   // 마이페이지 불러오기
   getMyPage: (id) => instance.get(`/users/${id}`), */
-};
+// };
 
 export default api;
