@@ -1,36 +1,56 @@
 {
   "posts": [
     {
-      "content": "gggggggffff",
-      "id": 19
+      "content": "ddddd",
+      "id": 24
     },
     {
-      "content": "1111111111111",
-      "id": 21
+      "content": "ㅇㅇㅇㅇ",
+      "id": 25
     },
     {
-      "content": "ffff",
-      "id": 22
+      "id": 26
     },
     {
-      "content": "ggggggggggggggg",
-      "id": 23
+      "content": "ee",
+      "imageUrl": {
+        "id": 26
+      },
+      "id": 27
+    },
+    {
+      "id": 28
+    },
+    {
+      "content": "cc",
+      "imageUrl": {
+        "id": 28
+      },
+      "id": 29
+    },
+    {
+      "id": 30
+    },
+    {
+      "content": "d",
+      "imageUrl": {
+        "id": 30
+      },
+      "id": 31
     }
   ],
-
   "login": [
     {
       "userId": "daun99",
       "password": "123456789"
     }
   ],
-
   "signup": [
     {
       "userId": "daun99",
-      "username": "졸려졸려왕졸려" ,
-      "password": "123456789" ,
-      "gender" : "여자" 
+      "username": "졸려졸려왕졸려",
+      "password": "123456789",
+      "gender": "여자"
     }
   ]
 }

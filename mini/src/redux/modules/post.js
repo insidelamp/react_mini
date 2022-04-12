@@ -3,9 +3,12 @@ import { produce } from "immer";
 import { createAction, handleActions } from "redux-actions";
 import "moment";
 import moment from "moment";
+import api from "../../api/api";
 
 //로드
 const LOAD = "post/LOAD";
+
+const LOG_ON = "post/LOG_ON";
 
 const ADD = "post/ADD";
 
@@ -19,6 +22,8 @@ const LOADING = "LOADING";
 
 const loadPost = createAction(LOAD, (postObject) => ({ postObject }));
 
+const logOnePost = createAction(LOG_ON, (logOnPost) => ({ logOnPost }));
+
 const addPost = createAction(ADD, (post) => ({ post }));
 
 const editPost = createAction(EDIT, (post_id, post) => ({
@@ -29,16 +34,23 @@ const deletePost = createAction(DELETE, (post_id) => ({ post_id }));
 
 const initialState = {
   post: [],
+  logOnPost: {
+    user: {
+      userID: "",
+      password: "",
+    },
+    imageUrl: "",
+  },
   paging: { start: null, next: null, size: 3 },
   is_loading: false,
 };
 // middlewares
 
 const loadPostDB = () => {
-  return function (dispatch, getState, { history }) {
+  return async function (dispatch, getState, { history }) {
     console.log(dispatch);
-    axios
-      .get("http://localhost:3001/posts")
+    await api
+      .get("/api/posts")
       .then((res) => {
         dispatch(loadPost(res.data));
       })
@@ -48,8 +60,9 @@ const loadPostDB = () => {
   };
 };
 
-const addPostDB = (post) => {
-  return function (dispatch, getState, { history }) {
+const addPostDB = (post, imageForm) => {
+  console.log(post, imageForm);
+  return async function (dispatch, getState, { history }) {
     // const user_info = getState().user.user;
 
     // const _image = getState().preview;
@@ -62,30 +75,41 @@ const addPostDB = (post) => {
     // const _upload = storage
     //   .ref(`images/${user_info.user_id}_${new Date().getTime()}`)
     //   .putString(_image, "data_url");
-    const postObj = {
-      userId: "",
-      username: "",
-      password: "",
-      content: post.content,
-      modifiedAt: "",
-      imgUrl: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
-      userIcon: "",
-      comment: "",
-      date: moment().format("YYYY-MM-DD HH:mm:ss"),
-    };
-    console.log(postObj);
-    axios
-      .post("http://localhost:3001/posts", {
-        content: post.content,
-        imageUrl: post.imageUrl,
-        id: post.id,
+
+    await api
+      .post("/api/posts/write", imageForm)
+      .then(function (res) {
+        console.log("upload response !!", res);
+        api
+          .post(
+            "/api/posts/write",
+            {
+              content: post.content,
+              imageUrl: res.data,
+              id: post.id,
+            }
+            // {
+            //   headers: {'Authorization':`Bearer ${localStorage.getItem("token")}`},
+            // }
+          )
+
+          .then((res2) => {
+            const postObj = {
+              userId: res2.data.userID,
+              username: res2.data.username,
+              password: "",
+              content: post.content,
+              modifiedAt: "",
+              imgUrl: res2.data.imageUrl,
+              userIcon: "",
+              comment: "",
+              date: moment().format("YYYY-MM-DD HH:mm:ss"),
+            };
+            dispatch(addPost(postObj));
+            history.replace("/");
+          });
       })
 
-      .then((res) => {
-        let posts = { ...post };
-        dispatch(addPost(posts));
-        history.replace("/");
-      })
       .catch((err) => {
         console.log("글 불러오기 실패!", err);
       });
@@ -93,9 +117,9 @@ const addPostDB = (post) => {
 };
 
 const editPostDB = (post_id, post) => {
-  return function (dispatch, getState, { history }) {
-    axios
-      .put("http://localhost:3001/posts/" + post_id, {
+  return async function (dispatch, getState, { history }) {
+    await api
+      .put("/api/posts/modify/{postsId}", {
         ...post,
       })
       .then((response) => {
@@ -133,9 +157,9 @@ const editPostDB = (post_id, post) => {
 };
 
 const deletePostDB = (post_id = null) => {
-  return function (dispatch, getState, { history }) {
-    axios
-      .delete("http://localhost:3001/posts/" + post_id, { post_id })
+  return async function (dispatch, getState, { history }) {
+    await api
+      .delete("/api/delete/{postId}", { post_id })
       .then((doc) => {
         history.replace("/");
         dispatch(deletePost(post_id));
