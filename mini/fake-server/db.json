@@ -1,18 +1,18 @@
 {
   "posts": [
     {
-      "content": "ddddd",
+      "contents": "ddddd",
       "id": 24
     },
     {
-      "content": "ㅇㅇㅇㅇ",
+      "contents": "ㅇㅇㅇㅇ",
       "id": 25
     },
     {
       "id": 26
     },
     {
-      "content": "ee",
+      "contents": "ee",
       "imageUrl": {
         "id": 26
       },
@@ -22,7 +22,7 @@
       "id": 28
     },
     {
-      "content": "cc",
+      "contents": "cc",
       "imageUrl": {
         "id": 28
       },
@@ -32,7 +32,7 @@
       "id": 30
     },
     {
-      "content": "d",
+      "contents": "d",
       "imageUrl": {
         "id": 30
       },

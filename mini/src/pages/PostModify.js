@@ -4,6 +4,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import { Grid, Button, Input, Text } from "../elements";
 import axios from "axios";
 import Post from "../components/Post";
+import api from "../api/api";
 
 const PostWrite = (props) => {
   console.log(props);
@@ -14,13 +15,13 @@ const PostWrite = (props) => {
   const is_edit = post_id ? true : false;
   console.log(is_edit);
 
-  const [contents, setContents] = React.useState(post_list.content);
+  const [contents, setContents] = React.useState(post_list.contents);
 
   const [post, setPost] = React.useState({
     userId: "",
     username: "",
     password: "",
-    content: "",
+    contents: "",
     modifiedAt: "",
     imgUrl: "",
     userIcon: "",
@@ -30,7 +31,7 @@ const PostWrite = (props) => {
   const changeContents = (e) => {
     setPost({
       // ...post,
-      content: e.target.value,
+      contents: e.target.value,
     });
   };
 
@@ -40,7 +41,7 @@ const PostWrite = (props) => {
       userId: "",
       username: "",
       password: "",
-      content: "",
+      contents: "",
       modifiedAt: "",
       imgUrl: "",
       userIcon: "",
@@ -48,11 +49,11 @@ const PostWrite = (props) => {
       date: "",
     };
     setPost(
-      axios
-        .get("http://localhost:3001/posts/" + post_id)
+      api
+        .get("/api/posts/modify/{postsId}")
         .then((response) => {
           setPost({
-            content: response.data.content,
+            contents: response.data.contents,
             userId: response.data.userId,
           });
         })
@@ -90,7 +91,7 @@ const PostWrite = (props) => {
 
       <Grid padding="16px">
         <Input
-          value={post.content}
+          value={post.contents}
           _onChange={changeContents}
           label="게시글 내용"
           placeholder="게시글 작성"

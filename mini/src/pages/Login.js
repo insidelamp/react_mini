@@ -77,7 +77,6 @@ const LoginWrap = styled.div`
   margin: 0 auto;
   text-align: center;
 `;
-
 const ContentWrap = styled.div`
   display: flex;
   flex-direction: column;

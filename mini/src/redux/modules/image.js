@@ -1,6 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
 import axios from "axios";
+import api from "../../api/api";
 
 const UPLOADING = "UPLOADING";
 const UPLOAD_IMAGE = "UPLOAD_IMAGE";
@@ -24,23 +25,25 @@ const uploadImageFB = (imageForm) => {
 
     // console.log(imageForm);
 
-    axios
-      .post(
-        "http://localhost:3001/posts",
-        imageForm // 미리 약속한 주소
+    // axios
+    //   .post(
+    //     "http://localhost:3001/posts",
+    //     imageForm // 미리 약속한 주소
 
-        // 서버가 필요로 하는 데이터를 넘겨주고,
-        // {
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data'
-        //     },
-        // } // 누가 요청했는 지 알려줍니다. (config에서 해요!)
-      )
+    //     // 서버가 필요로 하는 데이터를 넘겨주고,
+    //     // {
+    //     //     headers: {
+    //     //         'Content-Type': 'multipart/form-data'
+    //     //     },
+    //     // } // 누가 요청했는 지 알려줍니다. (config에서 해요!)
+    //   )
+    api
+      .post("/api/posts/write", imageForm)
       .then(function (res) {
         console.log("upload response !! ", res);
 
         // dispatch(uploadImage(`http://14.45.204.153:8080/${res.data}`));
-        dispatch(uploadImage(`http://localhost:3001/posts`));
+        dispatch(uploadImage(`http://3.35.27.159:8080/${res.data}`));
       })
       .catch(function (error) {
         console.log(error);

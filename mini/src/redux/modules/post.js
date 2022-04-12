@@ -60,8 +60,8 @@ const loadPostDB = () => {
   };
 };
 
-const addPostDB = (post, imageForm) => {
-  console.log(post, imageForm);
+const addPostDB = (post) => {
+  console.log(post);
   return async function (dispatch, getState, { history }) {
     // const user_info = getState().user.user;
 
@@ -75,43 +75,46 @@ const addPostDB = (post, imageForm) => {
     // const _upload = storage
     //   .ref(`images/${user_info.user_id}_${new Date().getTime()}`)
     //   .putString(_image, "data_url");
-
+    const sendPost = {
+      contents: post.contents,
+      imgUrl: post.imgUrl,
+    };
+    console.log("글 추가 시도");
     await api
-      .post("/api/posts/write", imageForm)
+      .post("/api/posts/write", sendPost)
       .then(function (res) {
-        console.log("upload response !!", res);
-        api
-          .post(
-            "/api/posts/write",
-            {
-              userId: post.userId,
-              content: post.content,
-              imgUrl: post.imgUrl,
-            }
-            // {
-            //   headers: {'Authorization':`Bearer ${localStorage.getItem("token")}`},
-            // }
-          )
+        console.log("글 추가 성공!!", res);
+        // api
+        //   .post(
+        //     "/api/posts/write",
+        //     {
+        //       userId: post.userId,
+        //       contents: post.contents,
+        //       imgUrl: post.imgUrl,
+        //     }
+        //     // {
+        //     //   headers: {'Authorization':`Bearer ${localStorage.getItem("token")}`},
+        //     // }
+        //   )
 
-          .then((res2) => {
-            const postObj = {
-              userId: res2.data.userID,
-              username: res2.data.username,
-              password: "",
-              content: post.content,
-              modifiedAt: "",
-              imgUrl: res2.data.imageUrl,
-              userIcon: "",
-              comment: "",
-              date: moment().format("YYYY-MM-DD HH:mm:ss"),
-            };
-            dispatch(addPost(postObj));
-            history.replace("/");
-          });
+        //   .then((res2) => {
+        //     const postObj = {
+        //       userId: res2.data.userID,
+        //       username: res2.data.username,
+        //       password: "",
+        //       contents: post.contents,
+        //       modifiedAt: "",
+        //       imgUrl: res2.data.imageUrl,
+        //       userIcon: "",
+        //       comment: "",
+        //       date: moment().format("YYYY-MM-DD HH:mm:ss"),
+        //     };
+        //     dispatch(addPost(postObj));
+        //     history.replace("/");
+        //   });
       })
-
       .catch((err) => {
-        console.log("글 불러오기 실패!", err);
+        console.log("글 추가 실패!", err);
       });
   };
 };

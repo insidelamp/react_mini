@@ -58,21 +58,24 @@ const loginDB = (userId, password) => {
   return async function (dispatch, getState, { history }) {
     await api
 
-      .post("api/user/login", {
+      .post("/api/user/login", {
         userId: userId,
         password: password,
       })
       .then((res) => {
+        console.log(res);
         const token_res = res.headers.authorization;
+        console.log(token_res);
         setToken(token_res);
 
         return token_res;
       })
       .then((token_res) => {
+        console.log(token_res);
         api({
           method: "post",
           // 서버연결 URL /user/login
-          url: "api/user/login",
+          url: "/api/user/login",
           headers: {
             Authorization: `${token_res}`,
           },
@@ -122,6 +125,7 @@ export default handleActions(
       produce(state, (draft) => {
         setCookie("is_login", "success");
         draft.userInfo = action.payload.user;
+        console.log(draft.userInfo);
         draft.isLogin = true;
       }),
     [LOG_OUT]: (state, action) =>

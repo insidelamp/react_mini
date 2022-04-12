@@ -11,7 +11,7 @@ const Post = (props) => {
       <Grid margin="30px">
         <Text>{props.id}</Text>
         <Text>{props.userId}</Text>
-        <Text>{props.content}</Text>
+        <Text>{props.contents}</Text>
       </Grid>
       <Button
         width="auto"
@@ -39,7 +39,7 @@ Post.defaultProps = {
     user_profile: "",
   },
   image_url: "",
-  content: "",
+  contents: "",
   comment_cnt: "",
   insert_dt: "2022-04-01 10:00:00",
   is_me: false,

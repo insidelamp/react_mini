@@ -8,10 +8,10 @@ import Upload from "../shared/Upload";
 const PostAdd = (props) => {
   const dispatch = useDispatch();
   const fileInput = useRef();
-  const [content, setContent] = React.useState("");
+  const [contents, setContents] = React.useState("");
   const preview = useSelector((state) => state.image.preview);
   const changeContents = (e) => {
-    setContent(e.target.value);
+    setContents(e.target.value);
   };
 
   const addPostBtn = () => {
@@ -20,10 +20,7 @@ const PostAdd = (props) => {
     let image = fileInput.current.files[0];
     console.log(image);
     imageForm.append("posts", image);
-    dispatch(
-      postActions.addPostDB({ content: content, imgURL: imageForm }),
-      history.replace("/")
-    );
+    dispatch(postActions.addPostDB({ contents: contents, imgURL: imageForm }));
   };
 
   //   const postBtn = () => {
@@ -67,7 +64,7 @@ const PostAdd = (props) => {
 
       <Grid padding="16px">
         <Input
-          value={content}
+          value={contents}
           _onChange={changeContents}
           label="게시글 내용"
           placeholder="게시글 작성"
