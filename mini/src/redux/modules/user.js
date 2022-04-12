@@ -1,104 +1,151 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import api from "../../api/api"
+//import axios from 'axios'
+import api from "../../api/api";
 
+import { setToken } from "../../shared/token";
+import { setCookie, deleteCookie } from "../../shared/Cookie";
 
-//actions
-const LOGIN = "LOGIN";
-const GET_USER = "GET_USER";
+// actions
 const LOG_OUT = "LOG_OUT";
+const GET_USER = "GET_USER";
+const SET_USER = "SET_USER";
 
-//action creators
-const login = createAction(LOGIN, (user) => ({ user }));
-const logOut = createAction(LOG_OUT, (user) => ({user}));
-const getUser = createAction(GET_USER, (user) => ({ user }));
+// action creators
+const setUser = createAction(SET_USER, (user) => ({ user }));
+const getUser = createAction(GET_USER, () => ({}));
+const logOut = createAction(LOG_OUT, () => ({}));
 
-//initialState ***
+// initialState
 const initialState = {
-    userId: null,
-    is_login: false,
-    name: null,
-    
-}
+  userInfo: {
+    userId: "",
+    username: "",
+  },
+  isLogin: false,
+};
 
-//middleware actions
-const loginDB = (userId, password) => {
-    return async function (dispatch, getState,{history}) {
-        const data = {
-            userId: userId,
-            password: password,
+const loginCheckDB = () => {
+  const token = sessionStorage.getItem("token");
+  return async function (dispatch, getState, { history }) {
+    await api
+      .post(
+        "/islogin",
+        {},
+        {
+          headers: {
+            "content-type": "applicaton/json;charset=UTF-8",
+            accept: "application/json",
+            Authorization: `${token}`,
+          },
         }
-        console.log(data);
-        // dispatch(login(data.userId));
-        await api.post("/login",  data)
-            .then((response) => {
-                console.log(response);
-                if (response.data.token) {
-                    localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('name', response.data.userId);
-                    
-                    history.push('/')
-                    window.location.replace("/")
-                    
-                    console.log("로그인이 되었어요")
-                }
-                dispatch(login(response.data.userId))
-            })
-            .catch((err) => {
-               console.log(err);
-            //    window.alert("아이디와 비밀번호가 일치하지 않습니다.")
-        })
-    }
-}
+      )
+      .then((res) => {
+        dispatch(
+          setUser({
+            username: res.data.username,
+            nickname: res.data.nickname,
+          })
+        );
+      })
+      .catch((err) => {
+        console.log("로그인 확인 실패", err);
+      });
+  };
+};
 
-const signup = (userId, username, password, gender) => {
-    return async function (dispatch, getState, { history }) {
-      
-      const userInfo = {
+const loginDB = (userId, password) => {
+  return async function (dispatch, getState, { history }) {
+    await api
+
+      .post("api/user/login", {
+        userId: userId,
+        password: password,
+      })
+      .then((res) => {
+        const token_res = res.headers.authorization;
+        setToken(token_res);
+
+        return token_res;
+      })
+      .then((token_res) => {
+        api({
+          method: "post",
+          // 서버연결 URL /user/login
+          url: "api/user/login",
+          headers: {
+            Authorization: `${token_res}`,
+          },
+        })
+          .then((res) => {
+            dispatch(
+              setUser({
+                userId: res.data.userId,
+                username: res.data.username,
+              })
+            );
+          })
+          .catch((err) => {
+            console.log("로그인 확인 실패", err);
+          });
+        history.replace("/");
+      })
+      .catch((err) => {
+        window.alert("아이디나 패스워드를 다시 확인해주세요!");
+      });
+  };
+};
+
+const signUpDB = (userId, password, username, gender) => {
+  return async function (dispatch, getState, { history }) {
+    await api
+      // 서버연결 URL /api/signup
+      .post("/api/user/signup", {
         userId: userId,
         username: username,
         password: password,
         gender: gender,
-      };
-      console.log("회원가입중2")
-      await api
-        .post("/signup", userInfo)
-        .then(function (response) {
-            console.log(response)
-          history.push("/login");
-        })
-        .catch((err) => {
-          window.alert("회원가입에 실패했어요😥");
-        });
-    };
+      })
+      .then((res) => {
+        window.alert("회원가입이 완료되었습니다!");
+        history.replace("/");
+      })
+      .catch((err) => {
+        window.alert(err.response.data.errorMessage);
+      });
   };
-
-//reducer
-export default handleActions({
-    [LOGIN]: (state, action) => produce(state, (draft) => {
-        console.log(state, action);
-        draft.user = action.payload.user;
-        draft.is_login = true;
-        console.log("action.payload.user",action.payload.user)
-    }),
-    [LOG_OUT]: (state, action) =>
-    produce(state, (draft) => {
-        localStorage.removeItem("name")
-        localStorage.removeItem("token")
-        window.location.replace("/")
-        console.log("로그아웃합니다")
-    }),
-    },
-    initialState
-);
-
-//action creator export
-const actionCreators = {
-    login,
-    loginDB,
-    getUser,
-    signup,
-    logOut
 };
 
-export { actionCreators }
+export default handleActions(
+  {
+    [SET_USER]: (state, action) =>
+      produce(state, (draft) => {
+        setCookie("is_login", "success");
+        draft.userInfo = action.payload.user;
+        draft.isLogin = true;
+      }),
+    [LOG_OUT]: (state, action) =>
+      produce(state, (draft) => {
+        sessionStorage.removeItem("token");
+        deleteCookie("is_login");
+        draft.userInfo = {
+          userId: "",
+          username: "",
+        };
+        draft.isLogin = false;
+      }),
+    [GET_USER]: (state, action) => produce(state, (draft) => {}),
+  },
+  initialState
+);
+
+// action creator export
+const actionCreators = {
+  logOut,
+  getUser,
+  signUpDB,
+  loginDB,
+  loginCheckDB,
+};
+
+export { actionCreators };

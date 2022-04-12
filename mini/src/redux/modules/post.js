@@ -50,7 +50,7 @@ const loadPostDB = () => {
   return async function (dispatch, getState, { history }) {
     console.log(dispatch);
     await api
-      .get("/api/posts")
+      .get("api/posts")
       .then((res) => {
         dispatch(loadPost(res.data));
       })
@@ -84,9 +84,9 @@ const addPostDB = (post, imageForm) => {
           .post(
             "/api/posts/write",
             {
+              userId: post.userId,
               content: post.content,
-              imageUrl: res.data,
-              id: post.id,
+              imgUrl: post.imgUrl,
             }
             // {
             //   headers: {'Authorization':`Bearer ${localStorage.getItem("token")}`},
