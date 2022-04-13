@@ -15,12 +15,10 @@ const PostAdd = (props) => {
   };
 
   const addPostBtn = () => {
-    const imageForm = new FormData();
-    console.log(imageForm);
     let image = fileInput.current.files[0];
     console.log(image);
-    imageForm.append("posts", image);
-    dispatch(postActions.addPostDB({ contents: contents, imgURL: imageForm }));
+
+    dispatch(postActions.addPostDB({ contents: contents, image: image }));
   };
 
   //   const postBtn = () => {

@@ -48,10 +48,11 @@ const initialState = {
 
 const loadPostDB = () => {
   return async function (dispatch, getState, { history }) {
-    console.log(dispatch);
     await api
       .get("api/posts")
       .then((res) => {
+        console.log(12345);
+
         dispatch(loadPost(res.data));
       })
       .catch((err) => {
@@ -61,57 +62,27 @@ const loadPostDB = () => {
 };
 
 const addPostDB = (post) => {
-  console.log(post);
   return async function (dispatch, getState, { history }) {
-    // const user_info = getState().user.user;
+    const form = new FormData();
+    form.append("file", post.image);
+    form.append(
+      "postsRequestDto",
+      new Blob([JSON.stringify({ contents: post.contents })], {
+        type: "application/json",
+      })
+    );
 
-    // const _image = getState().preview;
-
-    // const storageRef = ref(
-    //   storage,
-    //   `images/${user_info.user_id}_${new Date().getTime()}`
-    // );
-
-    // const _upload = storage
-    //   .ref(`images/${user_info.user_id}_${new Date().getTime()}`)
-    //   .putString(_image, "data_url");
-    const sendPost = {
-      contents: post.contents,
-      imgUrl: post.imgUrl,
-    };
     console.log("글 추가 시도");
     await api
-      .post("/api/posts/write", sendPost)
+      .post("/api/posts/write", form, {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": `multipart/form-data`,
+        },
+      })
       .then(function (res) {
+        history.replace("/");
         console.log("글 추가 성공!!", res);
-        // api
-        //   .post(
-        //     "/api/posts/write",
-        //     {
-        //       userId: post.userId,
-        //       contents: post.contents,
-        //       imgUrl: post.imgUrl,
-        //     }
-        //     // {
-        //     //   headers: {'Authorization':`Bearer ${localStorage.getItem("token")}`},
-        //     // }
-        //   )
-
-        //   .then((res2) => {
-        //     const postObj = {
-        //       userId: res2.data.userID,
-        //       username: res2.data.username,
-        //       password: "",
-        //       contents: post.contents,
-        //       modifiedAt: "",
-        //       imgUrl: res2.data.imageUrl,
-        //       userIcon: "",
-        //       comment: "",
-        //       date: moment().format("YYYY-MM-DD HH:mm:ss"),
-        //     };
-        //     dispatch(addPost(postObj));
-        //     history.replace("/");
-        //   });
       })
       .catch((err) => {
         console.log("글 추가 실패!", err);
@@ -121,48 +92,37 @@ const addPostDB = (post) => {
 
 const editPostDB = (post_id, post) => {
   return async function (dispatch, getState, { history }) {
+    const form = new FormData();
+    form.append("file", post.image);
+    form.append(
+      "postsRequestDto",
+      new Blob([JSON.stringify({ contents: post.contents })], {
+        type: "application/json",
+      })
+    );
+
     await api
-      .put("/api/posts/modify/{postsId}", {
-        ...post,
+      .put(`/api/posts/modify/${post_id}`, form, {
+        headers: {
+          Accept: "*/*",
+          "Content-Type": `multipart/form-data`,
+        },
       })
       .then((response) => {
-        dispatch(editPost(post_id, { ...post }));
+        dispatch(editPost(post_id, { ...form }));
+        dispatch(loadPostDB());
         history.replace("/");
       })
       .catch((err) => {
         window.alert("수정 실패");
-        // console.log("수정실패");
       });
-
-    // _upload.then((snapshot) => {
-    //   snapshot.ref
-    //     .getDownloadURL()
-    //     .then((url) => {
-    //       console.log(url);
-
-    //       return url;
-    //     })
-    //     .then((url) => {
-    //       postDB
-    //         .doc(post_id)
-    //         .update({ ...post, image_url: url })
-    //         .then((doc) => {
-    //           dispatch(editPost(post_id, { ...post, image_url: url }));
-    //           history.replace("/");
-    //         });
-    //     })
-    //     .catch((err) => {
-    //       window.alert("앗! 이미지 업로드에 문제가 있어요!");
-    //       console.log("앗! 이미지 업로드에 문제가 있어요!", err);
-    //     });
-    // });
   };
 };
 
 const deletePostDB = (post_id = null) => {
   return async function (dispatch, getState, { history }) {
     await api
-      .delete("/api/delete/{postId}", { post_id })
+      .delete(`/api/posts/delete/${post_id}`, { post_id })
       .then((doc) => {
         history.replace("/");
         dispatch(deletePost(post_id));
@@ -177,29 +137,25 @@ export default handleActions(
   {
     [LOAD]: (state, action) =>
       produce(state, (draft) => {
-        draft.post.push(...action.payload.postObject);
-        console.log(draft);
+        console.log(1234455555);
+        draft.post = action.payload.postObject;
         draft.is_loading = false;
       }),
     [ADD]: (state, action) =>
       produce(state, (draft) => {
         draft.post.unshift(action.payload.post);
-        console.log(state, draft);
       }),
     [EDIT]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.post.findIndex(
-          (p) => p.id + "" === action.payload.post_id
-        );
-        console.log(JSON.stringify(draft.post), idx);
+        let idx = draft.post.findIndex((p) => {
+          return p.id + "" === action.payload.post_id;
+        }); //p.id + "" === action.payload.post_id
 
         draft.post[idx] = { ...draft.post[idx], ...action.payload.post };
       }),
     [DELETE]: (state, action) =>
       produce(state, (draft) => {
-        draft.post = draft.post.filter(
-          (a) => a.id + "" !== action.payload.post_id
-        );
+        draft.post = draft.post.filter((a) => a.id !== action.payload.post_id);
       }),
     [LOADING]: (state, action) =>
       produce(state, (draft) => {

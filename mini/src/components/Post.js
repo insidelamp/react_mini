@@ -6,43 +6,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 
 const Post = (props) => {
+  console.log(props);
+  const post_list = useSelector((state) => state.post.post);
+  console.log(post_list);
+
   return (
     <React.Fragment>
       <Grid margin="30px">
-        <Text>{props.id}</Text>
-        <Text>{props.userId}</Text>
-        <Text>{props.contents}</Text>
+        <Text>번호 : {props.id}</Text>
+        <Text>사용자 이름 : {props.userId}</Text>
+        <Text>내용 : {props.contents}</Text>
+        <Image shape="rectangle" src={props.imgUrl} />
       </Grid>
       <Button
         width="auto"
         margin="0px 4px 0px 30px"
         padding="4px"
         _onClick={(event) => {
-          history.push(`/modify/${props.id}`);
+          history.push(`/detail/${props.id}`);
           event.stopPropagation();
         }}
       >
-        수정
+        상세보기
       </Button>
-      <Grid is_flex margin="0px 10px" width="auto">
-        <Button width="auto" padding="4px">
-          삭제
-        </Button>
-      </Grid>
     </React.Fragment>
   );
-};
-
-Post.defaultProps = {
-  user_info: {
-    user_name: "yarn",
-    user_profile: "",
-  },
-  image_url: "",
-  contents: "",
-  comment_cnt: "",
-  insert_dt: "2022-04-01 10:00:00",
-  is_me: false,
 };
 
 export default Post;

@@ -10,12 +10,14 @@ const Upload = (props) => {
 
   const selectfile = (e) => {
     let file_kind = e.target.value.lastIndexOf(".");
+    console.log(file_kind);
     let file_name = e.target.value.substring(
       file_kind + 1,
       e.target.value.length
     );
+    console.log(file_name);
     let file_type = file_name.toLowerCase();
-
+    console.log(file_type);
     let check_file_type = ["jpg", "gif", "png", "jpeg"];
 
     if (check_file_type.indexOf(file_type) === -1) {
