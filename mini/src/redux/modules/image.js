@@ -8,11 +8,11 @@ const UPLOAD_IMAGE = "UPLOAD_IMAGE";
 const SET_PREVIEW = "SET_PREVIEW";
 
 const uploading = createAction(UPLOADING, (uploading) => ({ uploading }));
-const uploadImage = createAction(UPLOAD_IMAGE, (image_url) => ({ image_url }));
+const uploadImage = createAction(UPLOAD_IMAGE, (imageURl) => ({ imageURl }));
 const setpreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
 
 const initialState = {
-  image_url:
+  imageURl:
     "https://wpi.digication.com/srvs/filemanager/campus/jDt5abnGTNWMW3zpvKz5/resize=fit:crop,align:center,width:1182,height:667/compress/cache?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJjYW1wdXMiLCJrZXkiOiJqRHQ1YWJuR1ROV01XM3pwdkt6NSIsImV4cCI6OTk5OTk5OTk5OX0.UJ6s9UfmkeztKB_VajDR7LD1aOvLSrtPLz-gfi5I2_M",
   uploading: false,
   preview: null,
@@ -22,27 +22,11 @@ const uploadImageFB = (imageForm) => {
   console.log(uploadImageFB);
   return function (dispatch, getState, { history }) {
     dispatch(uploading(true));
-
-    // console.log(imageForm);
-
-    // axios
-    //   .post(
-    //     "http://localhost:3001/posts",
-    //     imageForm // 미리 약속한 주소
-
-    //     // 서버가 필요로 하는 데이터를 넘겨주고,
-    //     // {
-    //     //     headers: {
-    //     //         'Content-Type': 'multipart/form-data'
-    //     //     },
-    //     // } // 누가 요청했는 지 알려줍니다. (config에서 해요!)
-    //   )
     api
       .post("/api/posts/write", imageForm)
       .then(function (res) {
         console.log("upload response !! ", res);
 
-        // dispatch(uploadImage(`http://14.45.204.153:8080/${res.data}`));
         dispatch(uploadImage(`http://3.35.27.159:8080/${res.data}`));
       })
       .catch(function (error) {
@@ -55,7 +39,7 @@ export default handleActions(
   {
     [UPLOAD_IMAGE]: (state, action) =>
       produce(state, (draft) => {
-        draft.image_url = action.payload.image_url;
+        draft.imageURl = action.payload.imageURl;
         draft.uploading = false;
       }),
 
