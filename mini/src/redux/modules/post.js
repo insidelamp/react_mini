@@ -81,6 +81,7 @@ const addPostDB = (post) => {
         },
       })
       .then(function (res) {
+        dispatch(loadPostDB());
         history.replace("/");
         console.log("글 추가 성공!!", res);
       })
@@ -124,8 +125,9 @@ const deletePostDB = (post_id = null) => {
     await api
       .delete(`/api/posts/delete/${post_id}`, { post_id })
       .then((doc) => {
-        history.replace("/");
         dispatch(deletePost(post_id));
+        dispatch(loadPostDB());
+        history.replace("/");
       })
       .catch((error) => {
         window.alert("아 게시물 삭제에 문제가 있어요");
@@ -143,7 +145,7 @@ export default handleActions(
       }),
     [ADD]: (state, action) =>
       produce(state, (draft) => {
-        draft.post.unshift(action.payload.post);
+        draft.post = action.payload.post;
       }),
     [EDIT]: (state, action) =>
       produce(state, (draft) => {
