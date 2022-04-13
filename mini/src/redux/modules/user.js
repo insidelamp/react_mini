@@ -14,8 +14,8 @@ const SET_USER = "SET_USER";
 
 // action creators
 const setUser = createAction(SET_USER, (user) => ({ user }));
-const getUser = createAction(GET_USER, () => ({  }));
-const logOut = createAction(LOG_OUT, () => ({  }));
+const getUser = createAction(GET_USER, () => ({}));
+const logOut = createAction(LOG_OUT, () => ({}));
 
 // initialState
 const initialState = {
@@ -28,120 +28,89 @@ const initialState = {
 
 const loginCheckDB = () => {
   const token = sessionStorage.getItem("token");
-  return async function  (dispatch, getState, {history}) {
-    await api.post("", {}, {
-      headers: { 
-        "content-type": "applicaton/json;charset=UTF-8", 
-        "accept": "application/json", 
-        "Authorization": `${token}`, 
+  return async function (dispatch, getState, { history }) {
+    await api.post("/auth", {}, {
+      headers: {
+        "content-type": "applicaton/json;charset=UTF-8",
+        "accept": "application/json",
+        "Authorization": `${token}`,
       },
     })
-    .then((res) => {
-      dispatch(setUser(
-        {
-          username: res.data.username,
-          nickname: res.data.nickname
-        })
-      );
-    })
-    .catch((err) => {
-      console.log("로그인 확인 실패", err)
-    })
+      .then((res) => {
+        dispatch(setUser(
+          {
+            userId: res.data.userId,
+            username: res.data.username
+          })
+        );
+      })
+      .catch((err) => {
+        console.log("로그인 확인 실패", err)
+      })
   }
 }
 
 const loginDB = (userId, password) => {
-  return async function (dispatch, getState, { history }) {
-    console.log(userId,password);
-    await api
-   
+  return function (dispatch, getState, { history }) {
+    api
     .post('/api/user/login',{
       userId: userId,
       password: password,
     })
-
     .then((res) => {
       console.log(res);
-       const token_res = res.data[1].token;
-       console.log(token_res);
-       setToken(token_res); return token_res }) 
-       
-    .then((token_res) =>{ 
-      api({ method: "post", 
-      url: "로그인 유지 주소",
-      headers: { "Authorization": `${token_res}`, }
-      , })
-
-    .then((res) => { 
-      dispatch(setUser( { userId: res.data.userId, username: res.data.username }) ); }) 
-
-    .catch((err) => { 
-      console.log("로그인 확인 실패", err) }) 
-      history.replace('/') }) 
-
-    .catch((err) => { 
-      window.alert("이메일이나 패스워드를 다시 확인해주세요!") 
-    }) 
-  }; 
+      const token_res = res.data.token;
+      setToken(token_res);
+      return res.data
+    })
+    // .then((token_res) =>{
+    //   api({ 
+    //     method: "get", 
+    //     url: "/auth", 
+    //     headers: { 
+    //       "Authorization": `Bearer ${token_res}`, 
+    //     }, 
+    //   })
+      .then((res) => {
+        console.log(res);
+        dispatch(setUser(
+          {
+            userId: res.userId,
+            username: res.username
+          })
+        );
+        history.replace('/')
+      })
+      // .catch((err) => {
+      //   console.log("로그인 확인 실패", err)
+      // })
+      // history.replace('/')
+    //})
+    // .catch((err) => {
+    //   window.alert("이메일이나 패스워드를 다시 확인해주세요!")
+    // })
+  };
 };
 
-//     .then((res) => {
-//       console.log(res);
-//       const token_res = res.headers.authorization;
 
-//       console.log(token_res);
-
-//       setToken(token_res);
-      
-//       return token_res
-//     })
-//     .then((token_res) =>{
-//      api({ 
-//         method: "post", 
-//         // 서버연결 URL /user/login
-//         url: "/api/user/login", 
-//         headers: { 
-//           "Authorization": `${token_res}`, 
-//         }, 
-//       })
-    
-//       .then((res) => {
-//         console.log(res);
-//         dispatch(setUser(
-//           {
-//             userId: res.data.userId,
-//             username: res.data.username
-//           })
-//         );
-//       })
-//       .catch((err) => {
-//         console.log("로그인 확인 실패", err)
-//       })
-//       history.replace('/')
-//     })
-//     .catch((err) => {
-//       window.alert("아이디나 패스워드를 다시 확인해주세요!")
-//     })
-//   };
-// };
 
 const signUpDB = (userId, password, username, gender) => {
-  return async function (dispatch, getState, {history}){
+  return async function (dispatch, getState, { history }) {
     await api
-    // 서버연결 URL /api/signup
-    .post('/api/user/signup',{
-      "userId": userId,
-      "username": username,
-      "password": password,
-      "gender": gender,
-    })
-    .then((res) => {
-      window.alert("회원가입이 완료되었습니다!");
-      history.replace('/');
-    })
-    .catch((err) => {
-      window.alert(err.response.data.errorMessage);
-    })
+      
+      .post('/api/user/signup', {
+        "userId": userId,
+        "username": username,
+        "password": password,
+        "gender": gender,
+      })
+      .then((res) => {
+        window.alert("회원가입이 완료되었습니다!");
+        history.replace('/');
+      })
+      .catch((err) => {
+        window.alert(err.response.data.errorMessage);
+      })
   }
 }
 
@@ -163,7 +132,7 @@ export default handleActions(
         };
         draft.isLogin = false;
       }),
-    [GET_USER]: (state, action) => produce(state, (draft) => {}),
+    [GET_USER]: (state, action) => produce(state, (draft) => { }),
   },
   initialState
 );

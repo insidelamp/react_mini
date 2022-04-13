@@ -16,7 +16,7 @@ const Login = (props) => {
 
   const login = () => {
     if (userId === "" || password === "") {
-      window.alert("모두 입력해주세요!");
+      window.alert("아이디와 비밀번호를 입력해주세요!");
       return;
     }
 
