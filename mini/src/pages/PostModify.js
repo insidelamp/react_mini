@@ -85,51 +85,53 @@ const PostWrite = (props) => {
         >
           로그인 하러가기
         </Button>
-
       </Grid>
     );
   } else {
     return (
       <React.Fragment>
-       <Box>
-        <Grid>
-          <Grid padding="16px">
-            <Text margin="0px" size="36px" bold>
-              {post.userId}님 게시글 수정
-            </Text>
+        <Box>
+          <Grid>
+            <Grid padding="16px">
+              <Text margin="0px" size="36px" bold>
+                {post.userId}님 게시글 수정
+              </Text>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <Grid>
-          <Grid padding="16px">
-            <Text margin="0px" size="24px" bold>
-              미리보기
-            </Text>
+          <Grid>
+            <Grid padding="16px">
+              <Text margin="0px" size="24px" bold>
+                미리보기
+              </Text>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid padding="16px">
-          <Text margin="0px 0px 10px 10px">
-            jpg, jpeg, png, gif 업로드 가능
-          </Text>
-          <Upload preview={preview} _ref={fileInput} />
-          {/* <Image shape="rectangle" src={preview ? preview : "https://wpi.digication.com/srvs/filemanager/campus/jDt5abnGTNWMW3zpvKz5/resize=fit:crop,align:center,width:1182,height:667/compress/cache?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJjYW1wdXMiLCJrZXkiOiJqRHQ1YWJuR1ROV01XM3pwdkt6NSIsImV4cCI6OTk5OTk5OTk5OX0.UJ6s9UfmkeztKB_VajDR7LD1aOvLSrtPLz-gfi5I2_M"}></Image> */}
-        </Grid>
-        <Grid padding="16px">
-          <Input
-            value={post.contents}
-            _onChange={changeContents}
-            label="게시글 내용"
-            placeholder="게시글 작성"
-            multiLine
-          />
-        </Grid>
-      <Grid padding="16px">
-        <Btn onClick={editPost}>게시글 수정</Btn>
-        <Btn margin="30px" onClick={deletePost}>게시글 삭제</Btn>
-      </Grid>
-      </Box>
-    </React.Fragment>
-  );
+          <Grid padding="16px">
+            <Text margin="0px 0px 10px 10px">
+              jpg, jpeg, png, gif 업로드 가능
+            </Text>
+            <Upload preview={preview} _ref={fileInput} />
+            {/* <Image shape="rectangle" src={preview ? preview : "https://wpi.digication.com/srvs/filemanager/campus/jDt5abnGTNWMW3zpvKz5/resize=fit:crop,align:center,width:1182,height:667/compress/cache?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJjYW1wdXMiLCJrZXkiOiJqRHQ1YWJuR1ROV01XM3pwdkt6NSIsImV4cCI6OTk5OTk5OTk5OX0.UJ6s9UfmkeztKB_VajDR7LD1aOvLSrtPLz-gfi5I2_M"}></Image> */}
+          </Grid>
+          <Grid padding="16px">
+            <Input
+              value={post.contents}
+              _onChange={changeContents}
+              label="게시글 내용"
+              placeholder="게시글 작성"
+              multiLine
+            />
+          </Grid>
+          <Grid padding="16px">
+            <Btn onClick={editPost}>게시글 수정</Btn>
+            <Btn margin="30px" onClick={deletePost}>
+              게시글 삭제
+            </Btn>
+          </Grid>
+        </Box>
+      </React.Fragment>
+    );
+  }
 };
 
 const Box = styled.div`
@@ -146,14 +148,14 @@ const Box = styled.div`
 
 const Btn = styled.button`
   height: 50px;
-  width:95%;
+  width: 95%;
   background-color: #ffffff;
   margin: auto;
   border: none;
   border-radius: 30px;
   font-family: "Noto Sans KR", sans-serif;
   font-size: 1rem;
-  color:#065555;
+  color: #065555;
   font-weight: 1000;
   text-align: center;
   text-decoration: none;
