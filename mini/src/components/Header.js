@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Grid, Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
+import styled from "styled-components";
 
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../redux/modules/user";
@@ -8,69 +9,80 @@ import Cookies from "universal-cookie";
 
 const Header = (props) => {
   const dispatch = useDispatch();
-  const cookies = new Cookies();
 
-  const isLogin = cookies.get("isLogin");
-  const userName = cookies.get("userName");
+    const is_token = sessionStorage.getItem("token") ? true : false;
+    console.log("is_token",is_token)
+    const logout =()=>{
+        dispatch(actionCreators.logOut({}))
+    }
+    // if (window.location.pathname === "/signup") return null;
+    // if (window.location.pathname === "/login") return null;
+    
 
-  // const logout = () => {
-  //   dispatch(actionCreators.logoutDB());
-
-  if (window.location.pathname === "/signup") return null;
-  if (window.location.pathname === "/login") return null;
-
-  if (isLogin && userName) {
-    return (
-      <React.Fragment>
-        <Grid is_flex padding="4px 16px">
-          <Grid>
-            {/* <Text margin="0px" size="24px" bold>
-                혼자같이
-              </Text> */}
-            <Image src="https://ifh.cc/g/MNQaDY.png" />
-          </Grid>
-          <Grid is_flex>
-            <Button
-              text="로그아웃"
-              _onClick={() => {
-                dispatch(actionCreators.logoutDB());
-                history.replace("/");
-                window.location.reload();
-              }}
-            ></Button>
-          </Grid>
-        </Grid>
-      </React.Fragment>
-    );
-  } else {
-    return (
-      <React.Fragment>
-        <Grid is_flex padding="4px 16px">
-          <Grid>
-            {/* <Text margin="0px" size="24px" bold>
-            혼자같이
-          </Text> */}
-            <Image src="https://ifh.cc/g/MNQaDY.png" />
-          </Grid>
-          <Grid is_flex>
-            <Button
-              text="로그인"
-              _onClick={(event) => {
-                history.push("/login");
-                event.stopPropagation();
-              }}
-            ></Button>
-            <Button
-              text="회원가입"
-              _onClick={() => {
-                history.push("/signup");
-              }}
-            ></Button>
-          </Grid>
-        </Grid>
-      </React.Fragment>
-    );
+    if(is_token){
+      return (
+        <React.Fragment>
+          
+            
+              <Logo src= "https://ifh.cc/g/MNQaDY.png" />
+            
+            
+              <Btn onClick={logout} >logout</Btn>
+              
+          
+        </React.Fragment>
+      );
   }
+
+  return (
+    <React.Fragment>
+          
+        <Logo src= "https://ifh.cc/g/MNQaDY.png" />
+
+        <BtnBox>
+          <Btn onClick={(event) => { history.push("/login"); event.stopPropagation(); }} >login</Btn>
+          <Btn onClick={() => {
+            history.push("/signup");
+          }}>signup</Btn>
+        </BtnBox>
+        
+    </React.Fragment>
+  ); 
+  
 };
 
+const Logo = styled.img`
+  height: 25%;
+  width: 25%;
+  margin: auto;
+  margin-top: 80px;
+  display: block;
+`;
+
+const Btn = styled.button`
+  height: 50px;
+  width:100px;
+  background-color: #71dcce;
+  margin: auto;
+  border: none;
+  border-radius: 30px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1rem;
+  color:#ffffff;
+  font-weight: 1000;
+  text-align: center;
+  text-decoration: none;
+  margin: 15px;
+`;
+
+const BtnBox = styled.div`
+  height: 35%;
+  width: 35%;
+  margin: auto;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
 export default Header;
+

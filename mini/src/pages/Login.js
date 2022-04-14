@@ -32,14 +32,7 @@ const Login = (props) => {
 
   return (
     <LoginWrap>
-      <Grid>
-        {/* <Text margin="0px" size="24px" bold>
-          혼자같이
-        </Text> */}
-        <Logo _onClick={() => {
-            history.push("/");
-          }} src= "https://ifh.cc/g/MNQaDY.png" />
-      </Grid>
+      
 
       <Text margin="0px 00px 48px 0px" size="35px" bold>
         로그인
@@ -66,17 +59,17 @@ const Login = (props) => {
         />
       </ContentWrap>
       <ButtonWrap>
-        <Button width="48%" _onClick={login}>
+        <Btn width="48%" onClick={login}>
           로그인
-        </Button>
-        <Button
+        </Btn>
+        <Btn
           width="48%"
-          _onClick={() => {
+          onClick={() => {
             history.push("/signup");
           }}
         >
           회원가입
-        </Button>
+        </Btn>
       </ButtonWrap>
     </LoginWrap>
   );
@@ -105,6 +98,22 @@ const Logo = styled.img`
   height: 50%;
   width: 50%;
   margin: 100px;
+`;
+
+const Btn = styled.button`
+height: 50px;
+width:95%;
+background-color: #9fcfcf;
+margin: auto;
+border: none;
+border-radius: 30px;
+font-family: "Noto Sans KR", sans-serif;
+font-size: 1rem;
+color:#ffffff;
+font-weight: 1000;
+text-align: center;
+text-decoration: none;
+margin: 15px;
 `;
 
 export default Login;

@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { Grid, Button, Input, Text } from "../elements";
 import Post from "../components/Post";
 import { history } from "../redux/configureStore";
+import {IoIosAddCircle} from "react-icons/io";
 
 const PostList = (props) => {
   const dispatch = useDispatch();
@@ -34,13 +35,15 @@ const PostList = (props) => {
           );
         })}
       </Grid>
-      <Button
-        text="게시글 추가하러가기"
-        _onClick={(event) => {
+      
+      <IoIosAddCircle size="80" color="#262a2a" 
+      
+        onClick={(event) => {
           history.push(`/add`);
           event.stopPropagation();
-        }}
-      ></Button>
+        }}/>
+      
+      
     </React.Fragment>
   );
 };

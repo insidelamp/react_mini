@@ -98,6 +98,7 @@ const loginDB = (userId, password) => {
             username: res.data.username,
           })
         );
+
         const accessToken = res.data.token;
         console.log(accessToken);
         // cookies.set("myJWT", accessToken, { path: "/" });
@@ -111,6 +112,7 @@ const loginDB = (userId, password) => {
         window.alert("로그인 완료");
         history.replace("/");
         window.location.reload();
+
       })
       .catch((err) => {
         console.log(err);

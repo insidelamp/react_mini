@@ -6,6 +6,7 @@ import axios from "axios";
 import Post from "../components/Post";
 import api from "../api/api";
 import Upload from "../shared/Upload";
+import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import Cookies from "universal-cookie";
 
@@ -84,11 +85,13 @@ const PostWrite = (props) => {
         >
           로그인 하러가기
         </Button>
+
       </Grid>
     );
   } else {
     return (
       <React.Fragment>
+       <Box>
         <Grid>
           <Grid padding="16px">
             <Text margin="0px" size="36px" bold>
@@ -120,18 +123,41 @@ const PostWrite = (props) => {
             multiLine
           />
         </Grid>
-
-        <Grid padding="16px">
-          <Button text="게시글 수정" _onClick={editPost}></Button>
-          <Button
-            margin="30px"
-            text="게시글 삭제"
-            _onClick={deletePost}
-          ></Button>
-        </Grid>
-      </React.Fragment>
-    );
-  }
+      <Grid padding="16px">
+        <Btn onClick={editPost}>게시글 수정</Btn>
+        <Btn margin="30px" onClick={deletePost}>게시글 삭제</Btn>
+      </Grid>
+      </Box>
+    </React.Fragment>
+  );
 };
+
+const Box = styled.div`
+  //height: auto;
+  width: 70%;
+  margin: auto auto 500px; auto;
+  margin-top: 200px;
+  display: block;
+  background-color:#d8e8e8;
+  border: 1px solid mome;
+  border-radius: 30px;
+  box-shadow: 20px 5px 30px #d7dbd9;
+`;
+
+const Btn = styled.button`
+  height: 50px;
+  width:95%;
+  background-color: #ffffff;
+  margin: auto;
+  border: none;
+  border-radius: 30px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 1rem;
+  color:#065555;
+  font-weight: 1000;
+  text-align: center;
+  text-decoration: none;
+  margin: 15px;
+`;
 
 export default PostWrite;

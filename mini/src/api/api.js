@@ -3,10 +3,6 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "http://3.35.27.159:8080",
 
-  // headers: {
-  //   "content-type": "applicaton/json;charset=UTF-8",
-  // },
-});
 
 // api.interceptors.request.use(function (config) {
 //   const accessToken = document.cookie.split("=")[1];
