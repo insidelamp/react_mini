@@ -4,7 +4,7 @@ import styled from "styled-components";
 import UserInput from "../components/UserInput";
 //import axios from 'axios';
 
-import { Text, Button } from "../elements";
+import { Text, Button,Grid, Image } from "../elements";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { idCheck, usernameCheck } from "../shared/common";
 
@@ -50,7 +50,14 @@ const Signup = (props) => {
 
   return (
     <SignupWrap>
-      <Text margin="0px 0px 48px 0px" size="48px" bold>
+      <Grid>
+        {/* <Text margin="0px" size="24px" bold>
+          혼자같이
+        </Text> */}
+        <Logo src= "https://ifh.cc/g/MNQaDY.png" />
+      </Grid>
+
+      <Text margin="0px 0px 48px 0px" size="35px" bold>
         회원가입
       </Text>
       <ContentWrap>
@@ -63,7 +70,7 @@ const Signup = (props) => {
           margin="0px 0px 24px 0px"
           value={userId}
         />
-        <button>중복확인</button>
+        {/* <button>중복확인</button> */}
         <Text margin="0px 0px 8px 0px">닉네임</Text>
         <UserInput
           _onChange={(e) => {
@@ -73,7 +80,7 @@ const Signup = (props) => {
           margin="0px 0px 24px 0px"
           value={username}
         />
-        <button>중복확인</button>
+        {/* <button>중복확인</button> */}
 
         <Text margin="0px 0px 8px 0px">패스워드</Text>
         <UserInput
@@ -108,16 +115,16 @@ const Signup = (props) => {
         />
       </ContentWrap>
       <ButtonWrap>
-        <Button width="48%" _onClick={signup}>
+        <Button width="48%"  _onClick={signup}>
           회원가입
         </Button>
         <Button
           width="48%"
           _onClick={() => {
-            history.push("/");
+            history.push("/login");
           }}
         >
-          취소
+          로그인
         </Button>
       </ButtonWrap>
     </SignupWrap>
@@ -144,4 +151,9 @@ const ButtonWrap = styled.div`
   align-items: center;
 `;
 
+const Logo = styled.img`
+  height: 50%;
+  width: 50%;
+  margin: 100px;
+`;
 export default Signup;

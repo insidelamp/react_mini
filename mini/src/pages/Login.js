@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import '../App.css'
 
 import UserInput from "../components/UserInput";
-import { Text, Button } from "../elements";
+import { Text, Button, Grid, Image } from "../elements";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { idCheck } from "../shared/common";
+import PostList from "./PostList";
 
 const Login = (props) => {
   const { history } = props;
@@ -30,7 +32,16 @@ const Login = (props) => {
 
   return (
     <LoginWrap>
-      <Text margin="0px 0px 48px 0px" size="48px" bold>
+      <Grid>
+        {/* <Text margin="0px" size="24px" bold>
+          혼자같이
+        </Text> */}
+        <Logo _onClick={() => {
+            history.push("/");
+          }} src= "https://ifh.cc/g/MNQaDY.png" />
+      </Grid>
+
+      <Text margin="0px 00px 48px 0px" size="35px" bold>
         로그인
       </Text>
       <ContentWrap>
@@ -88,6 +99,12 @@ const ButtonWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const Logo = styled.img`
+  height: 50%;
+  width: 50%;
+  margin: 100px;
 `;
 
 export default Login;

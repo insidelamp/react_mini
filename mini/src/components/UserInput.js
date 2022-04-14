@@ -34,6 +34,7 @@ UserInput.defaultProps = {
 
 const ElInput = styled.input`
   border: 1px solid #c9c9c9;
+  border-radius: 30px;
   ${(props) => props.is_width ? `width: ${props.is_width};` : "width: 100%;"}
   padding: 12px 10px;
   box-sizing: border-box;

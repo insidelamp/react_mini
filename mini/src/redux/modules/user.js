@@ -80,7 +80,7 @@ const loginDB = (userId, password) => {
             username: res.username
           })
         );
-        history.replace('/')
+         history.replace('/')
       })
       // .catch((err) => {
       //   console.log("로그인 확인 실패", err)
@@ -110,8 +110,11 @@ const signUpDB = (userId, password, username, gender) => {
         history.replace('/');
       })
       .catch((err) => {
-        window.alert(err.response.data.errorMessage);
+        window.alert("이미 존재하는 아이디입니다!");
       })
+      // .catch((err) => {
+      //   window.alert(err.response.data.errorMessage);
+      // })
   }
 }
 
@@ -127,6 +130,7 @@ export default handleActions(
       produce(state, (draft) => {
         sessionStorage.removeItem("token");
         deleteCookie("is_login");
+        window.location.replace("/")
         draft.userInfo = {
           userId: "",
           username: "",
