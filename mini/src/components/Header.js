@@ -3,12 +3,13 @@ import { Button, Grid, Text, Image } from "../elements";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators} from '../redux/modules/user';
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../redux/modules/user";
+import Cookies from "universal-cookie";
 
 const Header = (props) => {
-  
   const dispatch = useDispatch();
+
     const is_token = sessionStorage.getItem("token") ? true : false;
     console.log("is_token",is_token)
     const logout =()=>{
@@ -84,3 +85,4 @@ const BtnBox = styled.div`
 `;
 
 export default Header;
+

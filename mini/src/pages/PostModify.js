@@ -8,6 +8,7 @@ import api from "../api/api";
 import Upload from "../shared/Upload";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
+import Cookies from "universal-cookie";
 
 const PostWrite = (props) => {
   const post_id = props.match.params.id;
@@ -16,6 +17,11 @@ const PostWrite = (props) => {
   const post_list = useSelector((state) => state.post.post);
 
   const preview = useSelector((state) => state.image.preview);
+
+  const cookies = new Cookies();
+
+  const is_login = cookies.get("is_login");
+  const userName = cookies.get("userName");
 
   const [post, setPost] = React.useState({
     userId: "",
@@ -65,37 +71,58 @@ const PostWrite = (props) => {
     dispatch(postActions.deletePostDB(post_id));
   };
 
-  return (
-    <React.Fragment>
-      <Box>
-      <Grid>
-        <Grid padding="16px">
-          
-        </Grid>
-      </Grid>
+  if (!is_login && !userName) {
+    return (
+      <Grid margin="100px 0px" padding="16px" center>
+        <Text size="32px" bold>
+          앗! 잠깐!
+        </Text>
+        <Text size="16px">로그인 후에만 수정 및 삭제가 가능합니다!</Text>
+        <Button
+          _onClick={() => {
+            history.replace("/");
+          }}
+        >
+          로그인 하러가기
+        </Button>
 
-      <Grid>
+      </Grid>
+    );
+  } else {
+    return (
+      <React.Fragment>
+       <Box>
+        <Grid>
+          <Grid padding="16px">
+            <Text margin="0px" size="36px" bold>
+              {post.userId}님 게시글 수정
+            </Text>
+          </Grid>
+        </Grid>
+
+        <Grid>
+          <Grid padding="16px">
+            <Text margin="0px" size="24px" bold>
+              미리보기
+            </Text>
+          </Grid>
+        </Grid>
         <Grid padding="16px">
-          <Text margin="0px" size="24px" bold>
-            미리보기
+          <Text margin="0px 0px 10px 10px">
+            jpg, jpeg, png, gif 업로드 가능
           </Text>
+          <Upload preview={preview} _ref={fileInput} />
+          {/* <Image shape="rectangle" src={preview ? preview : "https://wpi.digication.com/srvs/filemanager/campus/jDt5abnGTNWMW3zpvKz5/resize=fit:crop,align:center,width:1182,height:667/compress/cache?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJjYW1wdXMiLCJrZXkiOiJqRHQ1YWJuR1ROV01XM3pwdkt6NSIsImV4cCI6OTk5OTk5OTk5OX0.UJ6s9UfmkeztKB_VajDR7LD1aOvLSrtPLz-gfi5I2_M"}></Image> */}
         </Grid>
-      </Grid>
-      <Grid padding="16px">
-        <Text margin="0px 0px 10px 10px">jpg, jpeg, png, gif 업로드 가능</Text>
-        <Upload preview={preview} _ref={fileInput} />
-        {/* <Image shape="rectangle" src={preview ? preview : "https://wpi.digication.com/srvs/filemanager/campus/jDt5abnGTNWMW3zpvKz5/resize=fit:crop,align:center,width:1182,height:667/compress/cache?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJjYW1wdXMiLCJrZXkiOiJqRHQ1YWJuR1ROV01XM3pwdkt6NSIsImV4cCI6OTk5OTk5OTk5OX0.UJ6s9UfmkeztKB_VajDR7LD1aOvLSrtPLz-gfi5I2_M"}></Image> */}
-      </Grid>
-      <Grid padding="16px">
-        <Input
-          value={post.contents}
-          _onChange={changeContents}
-          label="게시글 내용"
-          placeholder="게시글 작성"
-          multiLine
-        />
-      </Grid>
-
+        <Grid padding="16px">
+          <Input
+            value={post.contents}
+            _onChange={changeContents}
+            label="게시글 내용"
+            placeholder="게시글 작성"
+            multiLine
+          />
+        </Grid>
       <Grid padding="16px">
         <Btn onClick={editPost}>게시글 수정</Btn>
         <Btn margin="30px" onClick={deletePost}>게시글 삭제</Btn>

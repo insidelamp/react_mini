@@ -15,10 +15,13 @@ const Post = (props) => {
     <React.Fragment>
       <Box>
       <Grid margin="30px">
-        <Text>번호 : {props.id}</Text>
+
+        <Text>작성날짜 : {props.createAt}</Text>
+
         <Text>사용자 이름 : {props.userId}</Text>
         
         <Image  shape="rectangle" src={props.imgUrl} />
+
         <Text>내용 : {props.contents}</Text>
       </Grid>
       <Btn

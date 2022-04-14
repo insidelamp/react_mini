@@ -4,11 +4,8 @@ import { createAction, handleActions } from "redux-actions";
 import "moment";
 import moment from "moment";
 import api from "../../api/api";
-
 //로드
 const LOAD = "post/LOAD";
-
-const LOG_ON = "post/LOG_ON";
 
 const ADD = "post/ADD";
 
@@ -22,8 +19,6 @@ const LOADING = "LOADING";
 
 const loadPost = createAction(LOAD, (postObject) => ({ postObject }));
 
-const logOnePost = createAction(LOG_ON, (logOnPost) => ({ logOnPost }));
-
 const addPost = createAction(ADD, (post) => ({ post }));
 
 const editPost = createAction(EDIT, (post_id, post) => ({
@@ -33,14 +28,12 @@ const editPost = createAction(EDIT, (post_id, post) => ({
 const deletePost = createAction(DELETE, (post_id) => ({ post_id }));
 
 const initialState = {
+  thumbnail: "http://via.placeholder.com/400x300",
+  uploading: false,
+  preview: null,
+  title: "",
+  contents: "",
   post: [],
-  logOnPost: {
-    user: {
-      userID: "",
-      password: "",
-    },
-    imageUrl: "",
-  },
   paging: { start: null, next: null, size: 3 },
   is_loading: false,
 };
@@ -62,7 +55,11 @@ const loadPostDB = () => {
 };
 
 const addPostDB = (post) => {
+  console.log(post);
+  const token = sessionStorage.getItem("token");
+
   return async function (dispatch, getState, { history }) {
+    console.log(token);
     const form = new FormData();
     form.append("file", post.image);
     form.append(
@@ -78,9 +75,11 @@ const addPostDB = (post) => {
         headers: {
           Accept: "*/*",
           "Content-Type": `multipart/form-data`,
+          Authorization: `${token}`,
         },
       })
       .then(function (res) {
+        console.log(res);
         dispatch(loadPostDB());
         history.replace("/");
         console.log("글 추가 성공!!", res);
