@@ -50,12 +50,7 @@ const Signup = (props) => {
 
   return (
     <SignupWrap>
-      <Grid>
-        {/* <Text margin="0px" size="24px" bold>
-          혼자같이
-        </Text> */}
-        <Logo src= "https://ifh.cc/g/MNQaDY.png" />
-      </Grid>
+      
 
       <Text margin="0px 0px 48px 0px" size="35px" bold>
         회원가입
@@ -115,17 +110,17 @@ const Signup = (props) => {
         />
       </ContentWrap>
       <ButtonWrap>
-        <Button width="48%"  _onClick={signup}>
+        <Btn width="48%"  _onClick={signup}>
           회원가입
-        </Button>
-        <Button
+        </Btn>
+        <Btn
           width="48%"
           _onClick={() => {
             history.push("/login");
           }}
         >
           로그인
-        </Button>
+        </Btn>
       </ButtonWrap>
     </SignupWrap>
   );
@@ -151,9 +146,25 @@ const ButtonWrap = styled.div`
   align-items: center;
 `;
 
-const Logo = styled.img`
-  height: 50%;
-  width: 50%;
-  margin: 100px;
+const Btn = styled.button`
+height: 50px;
+width:95%;
+background-color: #9fcfcf;
+margin: auto;
+border: none;
+border-radius: 30px;
+font-family: "Noto Sans KR", sans-serif;
+font-size: 1rem;
+color:#ffffff;
+font-weight: 1000;
+text-align: center;
+text-decoration: none;
+margin: 15px;
 `;
+
+// const Logo = styled.img`
+//   height: 50%;
+//   width: 50%;
+//   margin: 100px;
+// `;
 export default Signup;

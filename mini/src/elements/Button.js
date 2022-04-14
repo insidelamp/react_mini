@@ -36,6 +36,7 @@ Button.defaultProps = {
   padding: "12px 0px",
 };
 
+//안에 글씨
 const ElButton = styled.button`
   width: ${(props) => props.width};
   background-color: #212121;

@@ -80,7 +80,7 @@ const loginDB = (userId, password) => {
             username: res.username
           })
         );
-         history.replace('/')
+        window.location.replace("/")
       })
       // .catch((err) => {
       //   console.log("로그인 확인 실패", err)
