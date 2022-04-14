@@ -12,6 +12,9 @@ import { history } from "../redux/configureStore";
 const PostList = (props) => {
   const dispatch = useDispatch();
   const post = useSelector(({ post }) => post.post);
+  const posit = useSelector((props) => props);
+  console.log(posit);
+
   console.log(post);
 
   useEffect(() => {

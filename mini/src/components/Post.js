@@ -13,8 +13,7 @@ const Post = (props) => {
   return (
     <React.Fragment>
       <Grid margin="30px">
-        <Text>번호 : {props.id}</Text>
-        <Text>사용자 이름 : {props.userId}</Text>
+        <Text>작성날짜 : {props.createAt}</Text>
         <Text>내용 : {props.contents}</Text>
         <Image shape="rectangle" src={props.imgUrl} />
       </Grid>
